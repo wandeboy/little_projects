@@ -1,1 +1,0 @@
-# a cuples of proyects
