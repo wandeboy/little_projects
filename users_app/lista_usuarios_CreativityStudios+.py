@@ -1,6 +1,7 @@
 import pickle
+from tkinter import *
 '''
-ocupar pickle y terminar la funcion de modificacion de clientes
+agregar la interfaz graficas con tkinter
 '''
 
 def main():
@@ -23,20 +24,20 @@ def main():
 
 #completa
 def token_gen():
-	token_file = file("data.pickle")
+	data_file = open("data.pickle", "rb")
+	unplicke_data = pickle.load(data_file)
+	data_file.close()
 	tokens_list = []
 
-	for line in token_file:
-		tokens_list.append(line.strip().split(";")[0])
-
-	token_file.close()
+	for client in unplicke_data:
+		tokens_list.append(client[0])
 
 	if len(tokens_list) == 0:
 		return "A000"
 
 	letter,n1,n2,n3 = tuple(tokens_list[-1])
 	n = int(n1)+int(n2)+int(n3)
-	n =+ 1
+	n += 1
 
 	if n > 999:
 		letter = ord(letter)
@@ -54,54 +55,49 @@ def token_gen():
 def add_client():
 	name = input("Nombre del Cliente: ")
 	token = token_gen()
-	data_file = file("data.pickle")
-	file_data_list = []
-
-	for line in data_file:
-		file_data_list.append(line)
+	data_file = open("data.pickle", "rb")
+	unplicke_data = pickle.load(data_file)
 	data_file.close()
 
-	file_data_list.extend(list(token+";"+str(name)+"\{}"+"\n"))
+	unplicke_data.append([token, str(name), dict()])
 
-	data_file = open("data.pickle", "w")
-	data_file.writelines(file_data_list)
+	data_file = open("data.pickle", "wb")
+	pickle.dump(unplicke_data, data_file)
 	data_file.close()	
 	
 	print("Cliente creado exitosmanete")
 
-"""
-  yes_no = input("Quieres agregarle un dato al cliente?[S/N]: ")
-  
-  if yes_no.upper() == "S":
-    add_data_to_client(name)
-  else:
-    print("No se agregara un dato.")
-"""
+	yes_no = input("Quieres agregarle una cuenta al cliente?[S/N]: ")
+
+	if yes_no.upper() == "S":
+	 	add_data_to_client(token)
+	else:
+	 	print("No se agregara un dato.")
 
 #completa
 def show_clients():
-	data_file = file("data.pickle")
-	for line in data_file:
-		name = line.strip().split(";")[1]
+	data_file = open("data.pickle","rb")
+	unplicke_data = pickle.load(data_file)
+	data_file.close()
+	for client in unplicke_data:
+		name = client[1]
 		print(name)
+
+#completa
+def add_data_to_client(token):
+	accountant = 0
+	data_file = open("data.pickle","rb")
+	unplicke_data = pickle.load(data_file)
 	data_file.close()
 
-
-def add_data_to_client(token):
-	file_data_list = []
-	accountant = 0
-	data_file = file("data.pickle")
-
-	for line in data_file:
-		file_data_list.append(line)
-		token_in_file = line.strip().split(";")[0]
+	for client in unplicke_data:
+		token_in_file = client[0]
 		if token == token_in_file:
-			client_data = line.strip().split(";")
+			client_data = client
 			index = accountant
 		accountant += 1
-	data_file.close()
 
-	data_name = input("Que quieres agregar a "+str(client_data[1])+":")
+	data_name = input("Que quieres agregar a "+str(client_data[1])+": ")
 	username = input("Ingresa el usuario: ")
 	password = input("Ingresa la contraseña: ")
 
@@ -109,29 +105,72 @@ def add_data_to_client(token):
 	dictionary = client_data[2]
 	if data_name in dictionary:
 		print(data_name, "ya existe, por favor guardalo con otro nombre")
+		return
 	else:
 		dictionary[data_name] = (username, password)
 
-	data = [token, name, str(dictionary)]
-	file_data_list[index] = new_data
-
-	data_file = open("data.pickle", "w")
-	data_file.writelines(file_data_list)
+	data_file = open("data.pickle", "wb")
+	pickle.dump(unplicke_data, data_file)
 	data_file.close()
 
-
+#en progreso
 def search_client():
 	name_to_search = input("Que cliente buscas?: ")
-	data_file = file("data.pickle")
-	for line in data_file:
-		name = line.strip().split(";")[0]
-	if name == name_to_search:
-		print("Se encontro a",name)
-		data = line.strip.split(";")
-		for things in data:
-			print(things)
+	token = []
+	data_file = open("data.pickle","rb")
+	unplicke_data = pickle.load(data_file)
 	data_file.close()
+
+	for client in unplicke_data:
+		name = client[1]
+		if name.upper() == name_to_search.upper():
+			token.append(client[0])
+
+	if len(token) == 0:
+		print("no se encontro a", name)
+	elif len(token) > 1:
+		print("se encontraton", len(token), name)
+		client = []
+		for i in range(len(token)):
+			client.append(show_data(token[i]))
+	else:
+		print("Se encontro a", name)
+		client = show_data(token[0])
+		account = input("que cuenta quieres ver?: ")
+
+
+
+def show_data(token):
+	data_file = open("data.pickle","rb")
+	unplicke_data = pickle.load(data_file)
+	data_file.close()
+
+	for client in unplicke_data:
+		if token == client[0]
+			match_client = client
+			for accounts in client[2]:
+				print(accounts)
+
+	return match_client
+
 
 
 if __name__ == "__main__":
+
+	try:
+		pickle_file = open("data.pickle","rb")
+		pickle_data = pickle.load(pickle_file)
+		pickle_file.close()
+		if type(pickle_data) != type(list()):
+			pickle_file = open("data.pickle","wb")
+			empty_list = []
+			pickle.dump(empty_list, pickle_file)
+			pickle_file.close()
+
+	except:
+		pickle_file = open("data.pickle","wb")
+		empty_list = []
+		pickle.dump(empty_list, pickle_file)
+		pickle_file.close()
+
 	main()
