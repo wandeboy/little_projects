@@ -1,5 +1,7 @@
-import pickle
+import pickle, pyglet
 from tkinter import *
+pyglet.font.add_file('Dreamland.otf')
+
 '''
 agregar la interfaz graficas con tkinter
 '''
@@ -176,6 +178,12 @@ if __name__ == "__main__":
 	root = Tk()
 	root.title("CreativityStudios+'s book")
 	root.tk.call('wm', 'iconphoto', root._w, PhotoImage(file='icon.png'))
-	root.geometry('400x400')
 	root.config(bg="white")
+
+	frame = Frame(root, width="650", height="500", bg="#2af6dd")
+	frame.pack(expand=1, fill="both")
+
+	Label(frame, text="Prueba texto", fg="black", bg="#2af6dd", font="Dreamland, Regular").place(x=100, y=200)
+
 	root.mainloop()
+
