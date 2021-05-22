@@ -1,2 +1,2 @@
 # Context
-when a started to learn more about programming I start to take an approach to IAs and well are those I try to understanding and coding it
+when a started to learn more about programming I started to like IAs and well are those my trys to understanding and coding it.
